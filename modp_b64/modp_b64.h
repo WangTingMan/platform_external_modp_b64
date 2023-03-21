@@ -26,6 +26,22 @@
 
 #include <stddef.h>
 
+#if defined(WIN32) || defined(_MSC_VER)
+
+#if defined(LIBMODPB64_IMPLEMENTATION)
+#define LIBMODPB64_EXPORT __declspec(dllexport)
+#else
+#define LIBMODPB64_EXPORT __declspec(dllimport)
+#endif  // defined(LIBMODPB64_IMPLEMENTATION)
+
+#else  // defined(WIN32)
+#if defined(LIBMODPB64_IMPLEMENTATION)
+#define LIBMODPB64_EXPORT __attribute__((visibility("default")))
+#else
+#define LIBMODPB64_EXPORT
+#endif  // defined(LIBMODPB64_IMPLEMENTATION)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -55,7 +71,7 @@ extern "C" {
  * \endcode
  *
  */
-size_t modp_b64_encode(char* dest, const char* str, size_t len);
+size_t LIBMODPB64_EXPORT modp_b64_encode(char* dest, const char* str, size_t len);
 
 /**
  * Decode a base64 encoded string
@@ -78,7 +94,7 @@ size_t modp_b64_encode(char* dest, const char* str, size_t len);
  * if (len == -1) { error }
  * \endcode
  */
-size_t modp_b64_decode(char* dest, const char* src, size_t len);
+size_t LIBMODPB64_EXPORT modp_b64_decode(char* dest, const char* src, size_t len);
 
 /**
  * Given a source string of length len, this returns the amount of
